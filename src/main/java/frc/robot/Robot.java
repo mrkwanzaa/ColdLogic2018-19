@@ -54,6 +54,7 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
    */
   @Override
   public void autonomousPeriodic() {
+    //Test pushing from home computer
     double currentDistance = ultrasonic.getValue() * conversion;
     // Drive for 2 seconds
     if (m_timer.get() < 2.0) {
