@@ -29,6 +29,10 @@ public class Robot extends TimedRobot {
   private final int ultraPort = 0;
   private final double conversion = 0.5;//voltage to cm
   public double currentDistance = 0;
+  private double x;
+	private double y;
+	private double stickY;
+	private double stickX;
 //Varius ints and timers
 private AnalogInput ultrasonic = new AnalogInput(ultraPort);
 //sensors
@@ -58,8 +62,16 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
     // Drive for 2 seconds
     if (m_timer.get() < 2.0) {
        // drive forwards half speed
+       spark0.set(-0.5);
+       spark1.set(0.5);
+       spark2.set(0.5);
+       spark3.set(-0.5);
     } else {
        // stop robot
+       spark0.set(0);
+       spark1.set(0);
+       spark2.set(0);
+       spark3.set(0);
     }
   }
 
@@ -68,27 +80,50 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
    */
   @Override
   public void teleopInit() {
+    x = 0;
+    y = 0;
   }
 
   /**
    * This function is called periodically during teleoperated mode.
    */
   
-  double multi = 0.9;
   @Override
   public void teleopPeriodic() {
-      spark0.set(-lstick.getY()*multi-lstick.getX()*0.4);
-    	spark1.set(lstick.getY()*multi-lstick.getX()*0.4);
-    	spark2.set(lstick.getY()*multi-lstick.getX()*0.4);
-    	spark3.set(-lstick.getY()*multi-lstick.getX()*0.4);
-    	
-    	
-    	
-    	spark0.set(-lstick.getY()*multi-lstick.getX()*0.2);
-    	spark1.set(lstick.getY()*multi-lstick.getX()*0.2);
-    	spark2.set(lstick.getY()*multi-lstick.getX()*0.2);
-    	spark3.set(-lstick.getY()*multi-lstick.getX()*0.2);
-    	
+      stickY = lstick.getY();
+      stickX = lstick.getX();
+      //y stepper
+    	if((y > 0 && stickY < y) || (y < 0 && stickY > y))
+    	{
+    		y = stickY;
+    	}
+    	else if(stickY < -0.1  && y > stickY)
+    	{
+    		y -= 0.2;
+    	}
+    	else if(stickY > 0.1  && y < stickY)
+    	{
+    		y += 0.2;
+    	}
+    	//x Stepper
+    	if((x > 0 && stickX < x) || (x < 0 && stickX > x))
+    	{
+    		x = stickX;
+    	}
+    	else if(stickX < -0.1  && x > stickX)
+    	{
+    		x -= 0.2;
+    	}
+    	else if(stickX > 0.1  && x < stickX)
+    	{
+    		x += 0.2;
+      }
+
+      spark0.set(-y+x);
+      spark1.set(y-x);
+      spark2.set(y+x);
+      spark3.set(-y-x);
+      
     if(right3.get())
     {
 	    spark4.set(0.5);
