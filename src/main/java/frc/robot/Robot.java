@@ -9,17 +9,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 public class Robot extends TimedRobot {
-  private final Spark spark0 = new Spark(0);
-  private final Spark spark1 = new Spark(1);
-  private final Spark spark2 = new Spark(2);
-  private final Spark spark3 = new Spark(3);
-  private final Spark spark4 = new Spark(4);
+  private MotorLayout robo= new MotorLayout(5);
 //Motor Controllers
   private final Joystick lstick = new Joystick(0);
   private final Joystick rstick = new Joystick(1);
@@ -62,16 +57,16 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
     // Drive for 2 seconds
     if (m_timer.get() < 2.0) {
        // drive forwards half speed
-       spark0.set(-0.5);
-       spark1.set(0.5);
-       spark2.set(0.5);
-       spark3.set(-0.5);
+       robo.getController(0).set(-0.5);
+       robo.getController(1).set(0.5);
+       robo.getController(2).set(0.5);
+       robo.getController(3).set(-0.5);
     } else {
        // stop robot
-       spark0.set(0);
-       spark1.set(0);
-       spark2.set(0);
-       spark3.set(0);
+       robo.getController(0).set(0);
+       robo.getController(1).set(0);
+       robo.getController(2).set(0);
+       robo.getController(3).set(0);
     }
   }
 
@@ -119,18 +114,18 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
     		x += 0.2;
       }
 
-      spark0.set(-y+x);
-      spark1.set(y-x);
-      spark2.set(y+x);
-      spark3.set(-y-x);
+      robo.getController(0).set(-y+x);
+      robo.getController(1).set(y-x);
+      robo.getController(2).set(y+x);
+      robo.getController(3).set(-y-x);
       
     if(right3.get())
     {
-	    spark4.set(0.5);
+	    robo.getController(4).set(0.5);
     }
     else
     {
-      spark4.set(0);
+      robo.getController(4).set(0);
     }
   }
 
