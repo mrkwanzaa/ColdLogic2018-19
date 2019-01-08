@@ -9,12 +9,17 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 public class Robot extends TimedRobot {
-  private MotorLayout robo= new MotorLayout(5);
+  private final Spark spark0 = new Spark(0);
+  private final Spark spark1 = new Spark(1);
+  private final Spark spark2 = new Spark(2);
+  private final Spark spark3 = new Spark(3);
+  private final Spark spark4 = new Spark(4);
 //Motor Controllers
   private final Joystick lstick = new Joystick(0);
   private final Joystick rstick = new Joystick(1);
@@ -24,10 +29,6 @@ public class Robot extends TimedRobot {
   private final int ultraPort = 0;
   private final double conversion = 0.5;//voltage to cm
   public double currentDistance = 0;
-  private double x;
-	private double y;
-	private double stickY;
-	private double stickX;
 //Varius ints and timers
 private AnalogInput ultrasonic = new AnalogInput(ultraPort);
 //sensors
@@ -57,16 +58,8 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
     // Drive for 2 seconds
     if (m_timer.get() < 2.0) {
        // drive forwards half speed
-       robo.getController(0).set(-0.5);
-       robo.getController(1).set(0.5);
-       robo.getController(2).set(0.5);
-       robo.getController(3).set(-0.5);
     } else {
        // stop robot
-       robo.getController(0).set(0);
-       robo.getController(1).set(0);
-       robo.getController(2).set(0);
-       robo.getController(3).set(0);
     }
   }
 
@@ -75,65 +68,34 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
    */
   @Override
   public void teleopInit() {
-    x = 0;
-    y = 0;
   }
 
   /**
    * This function is called periodically during teleoperated mode.
    */
   
+  double multi = 0.9;
   @Override
   public void teleopPeriodic() {
-      stickY = lstick.getY();
-      stickX = lstick.getX();
-
-      
-      //not working
-      robo.getController(0).set(-stickY);
-      robo.getController(1).set(stickY);
-      //switch sides
-      robo.getController(2).set(-stickY);
-      robo.getController(3).set(-stickY);
-      //y stepper
-    	/*if((y > 0 && stickY < y) || (y < 0 && stickY > y))
-    	{
-    		y = stickY;
-    	}
-    	else if(stickY < -0.1  && y > stickY)
-    	{
-    		y -= 0.2;
-    	}
-    	else if(stickY > 0.1  && y < stickY)
-    	{
-    		y += 0.2;
-    	}
-    	//x Stepper
-    	if((x > 0 && stickX < x) || (x < 0 && stickX > x))
-    	{
-    		x = stickX;
-    	}
-    	else if(stickX < -0.1  && x > stickX)
-    	{
-    		x -= 0.2;
-    	}
-    	else if(stickX > 0.1  && x < stickX)
-    	{
-    		x += 0.2;
-      }
-
-      robo.getController(0).set(-y+x);
-      robo.getController(1).set(y-x);
-      robo.getController(2).set(y+x);
-      robo.getController(3).set(-y-x);*/
-      
+      spark0.set(-lstick.getY()*multi-lstick.getX()*0.4);
+    	spark1.set(lstick.getY()*multi-lstick.getX()*0.4);
+    	spark2.set(lstick.getY()*multi-lstick.getX()*0.4);
+    	spark3.set(-lstick.getY()*multi-lstick.getX()*0.4);
+    	
+    	
+    	
+    	spark0.set(-lstick.getY()*multi-lstick.getX()*0.2);
+    	spark1.set(lstick.getY()*multi-lstick.getX()*0.2);
+    	spark2.set(lstick.getY()*multi-lstick.getX()*0.2);
+    	spark3.set(-lstick.getY()*multi-lstick.getX()*0.2);
+    	
     if(right3.get())
     {
-	    robo.getController(4).set(0.5);
+	    spark4.set(0.5);
     }
     else
     {
-      robo.getController(4).set(0);
+      spark4.set(0);
     }
   }
 
