@@ -89,12 +89,12 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
       stickX = lstick.getX();
 
       
-      //not working
-      robo.getController(0).set(-stickY);
-      robo.getController(1).set(stickY);
-      //switch sides
-      robo.getController(2).set(-stickY);
-      robo.getController(3).set(-stickY);
+      //Right side
+      robo.getController(0).set(stickY+stickX);
+      robo.getController(1).set(stickY+stickX);
+      //left side
+      robo.getController(2).set(-stickY+stickX);
+      robo.getController(3).set(-stickY+stickX);
       //y stepper
     	/*if((y > 0 && stickY < y) || (y < 0 && stickY > y))
     	{
@@ -126,7 +126,7 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
       robo.getController(1).set(y-x);
       robo.getController(2).set(y+x);
       robo.getController(3).set(-y-x);*/
-      
+      //this comment made by comment gang
     if(right3.get())
     {
 	    robo.getController(4).set(0.5);
