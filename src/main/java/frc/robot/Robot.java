@@ -87,7 +87,7 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
   public void teleopPeriodic() {
       stickY = lstick.getY();
       stickX = lstick.getX();
-//git test push
+//remove git test push
       
       //Right side
       robo.getController(0).set(stickY+stickX);
