@@ -91,9 +91,9 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
       
       //Right side
       robo.getController(0).set(stickY+stickX);
-      robo.getController(1).set(stickY+stickX);
+      robo.getController(2).set(stickY+stickX);
       //left side
-      robo.getController(2).set(-stickY+stickX);
+      robo.getController(1).set(-stickY+stickX);
       robo.getController(3).set(-stickY+stickX);
       //y stepper
     	/*if((y > 0 && stickY < y) || (y < 0 && stickY > y))
