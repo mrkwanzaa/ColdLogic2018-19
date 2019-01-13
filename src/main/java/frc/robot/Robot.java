@@ -27,7 +27,8 @@ public class Robot extends TimedRobot {
   private double x;
 	private double y;
 	private double stickY;
-	private double stickX;
+  private double stickX;
+  private double stickSense;
 //Varius ints and timers
 private AnalogInput ultrasonic = new AnalogInput(ultraPort);
 //sensors
@@ -38,7 +39,7 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
   @Override
   public void robotInit() {
   }
-  //Git push test
+
   /**
    * This function is run once each time the robot enters autonomous mode.
    */
@@ -87,14 +88,14 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
   public void teleopPeriodic() {
       stickY = lstick.getY();
       stickX = lstick.getX();
-
+      stickSense = lstick.getRawAxis(3) + 2;
       
       //Right side
-      robo.getController(0).set(stickY+stickX);
-      robo.getController(1).set(stickY+stickX);
+      robo.getController(0).set((stickY+stickX) / stickSense);
+      robo.getController(1).set((stickY+stickX) / stickSense);
       //left side
-      robo.getController(2).set(-stickY+stickX);
-      robo.getController(3).set(-stickY+stickX);
+      robo.getController(2).set((-stickY+stickX) / stickSense);
+      robo.getController(3).set((-stickY+stickX) / stickSense);
       //y stepper
     	/*if((y > 0 && stickY < y) || (y < 0 && stickY > y))
     	{
