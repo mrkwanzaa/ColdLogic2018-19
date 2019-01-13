@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.cameraserver.CameraServer;
 
 public class Robot extends TimedRobot {
   private MotorLayout robo= new MotorLayout(5);
@@ -38,6 +39,7 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
    */
   @Override
   public void robotInit() {
+    CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**
