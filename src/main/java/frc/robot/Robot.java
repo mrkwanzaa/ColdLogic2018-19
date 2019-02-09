@@ -8,21 +8,22 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.cameraserver.CameraServer;
 
-
-
 public class Robot extends TimedRobot {
-  private MotorLayout robo= new MotorLayout(5);
+  private MotorLayout robo= new MotorLayout(6);
+
 //Motor Controllers
   private final Joystick lstick = new Joystick(0);
   private final Joystick rstick = new Joystick(1);
-  private final JoystickButton right3 = new JoystickButton(rstick, 3);
+  private final JoystickButton rightTrig = new JoystickButton(rstick, 1);
+  
+  private final JoystickButton rightThub = new JoystickButton(rstick, 2);
+
 //input areas
   private final Timer m_timer = new Timer();
   private final int ultraPort = 0;
@@ -33,15 +34,9 @@ public class Robot extends TimedRobot {
 	private double stickY;
   private double stickX;
   private double stickSense;
-
-  private Spark vacuum;
-
-  private Joystick left = new Joystick(0);
-  private Joystick right = new Joystick(1);
-  
-  private JoystickButton rightTrig = new JoystickButton(right, 1);
-	private JoystickButton rightThumb = new JoystickButton(right, 2);
-//Various ints and timers
+  private double sucko = 0;
+  private boolean suckoDown = true;
+//Varius ints and timers
 private AnalogInput ultrasonic = new AnalogInput(ultraPort);
 //sensors
   /**
@@ -109,46 +104,26 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
       //left side
       robo.getController(2).set((-stickY+stickX) / stickSense);
       robo.getController(3).set((-stickY+stickX) / stickSense);
-      //y stepper
-    	/*if((y > 0 && stickY < y) || (y < 0 && stickY > y))
-    	{
-    		y = stickY;
-    	}
-    	else if(stickY < -0.1  && y > stickY)
-    	{
-    		y -= 0.2;
-    	}
-    	else if(stickY > 0.1  && y < stickY)
-    	{
-    		y += 0.2;
-    	}
-    	//x Stepper
-    	if((x > 0 && stickX < x) || (x < 0 && stickX > x))
-    	{
-    		x = stickX;
-    	}
-    	else if(stickX < -0.1  && x > stickX)
-    	{
-    		x -= 0.2;
-    	}
-    	else if(stickX > 0.1  && x < stickX)
-    	{
-    		x += 0.2;
+
+
+      // climbo MODE
+      robo.getController(5).set(rstick.getY());
+
+      if (rightTrig.get()) {
+        suckoDown = false;
+      }
+      else if(rightThub.get()){
+        suckoDown = true;
       }
 
-      robo.getController(0).set(-y+x);
-      robo.getController(1).set(y-x);
-      robo.getController(2).set(y+x);
-      robo.getController(3).set(-y-x);*/
-
-      //Suckmaster 3000
-     if (rightTrig.get()) {
-       vacuum.set(0.2);
-     }
-      //Elevator Lift Code
-      robo.getController(5).set(rstick.getY());
+      if(suckoDown && sucko > 0.0){
+        sucko-= 0.01;
+      }
+      else if(!suckoDown && sucko < 1.00){ 
+        sucko+=0.01;
+      }
+      robo.getController(4).set(sucko);
   }
-
   /**
    * This function is called periodically during test mode.
    */

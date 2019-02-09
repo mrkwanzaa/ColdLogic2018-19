@@ -7,8 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
-
+import edu.wpi.first.wpilibj.buttons.*;
 /**
  * Do NOT add any static variables to this class, or any initialization at all.
  * Unless you know what you are doing, do not modify this file except to
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj.RobotBase;
  */
 public final class Main {
   private Main() {
+    
   }
 
   /**
