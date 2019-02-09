@@ -129,14 +129,9 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
       robo.getController(2).set(y+x);
       robo.getController(3).set(-y-x);*/
       //this comment made by comment gang
-    if(right3.get())
-    {
-	    robo.getController(4).set(0.5);
-    }
-    else
-    {
-      robo.getController(4).set(0);
-    }
+      
+    robo.getController(4).set(rstick.getY()/2.5);
+    
   }
 
   /**
