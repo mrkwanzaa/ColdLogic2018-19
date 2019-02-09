@@ -8,11 +8,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.cameraserver.CameraServer;
+
+
 
 public class Robot extends TimedRobot {
   private MotorLayout robo= new MotorLayout(5);
@@ -30,7 +33,15 @@ public class Robot extends TimedRobot {
 	private double stickY;
   private double stickX;
   private double stickSense;
-//Varius ints and timers
+
+  private Spark vacuum;
+
+  private Joystick left = new Joystick(0);
+  private Joystick right = new Joystick(1);
+  
+  private JoystickButton rightTrig = new JoystickButton(right, 1);
+	private JoystickButton rightThumb = new JoystickButton(right, 2);
+//Various ints and timers
 private AnalogInput ultrasonic = new AnalogInput(ultraPort);
 //sensors
   /**
@@ -129,9 +140,13 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
       robo.getController(1).set(y-x);
       robo.getController(2).set(y+x);
       robo.getController(3).set(-y-x);*/
-      //this comment made by comment gang
-	    robo.getController(4).set(rstick.getY());
-    
+
+      //Suckmaster 3000
+     if (rightTrig.get()) {
+       vacuum.set(0.2);
+     }
+      //Elevator Lift Code
+      robo.getController(5).set(rstick.getY());
   }
 
   /**
