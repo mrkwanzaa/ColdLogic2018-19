@@ -118,9 +118,11 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
 
       if(suckoDown && sucko > 0.0){
         sucko-= 0.01;
+        System.out.println("Suck off");
       }
       else if(!suckoDown && sucko < 1.00){ 
         sucko+=0.01;
+        System.out.println("Suck on");
       }
       robo.getController(4).set(sucko);
   }
