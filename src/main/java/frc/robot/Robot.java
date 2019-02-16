@@ -12,7 +12,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Encoder;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.hal.AccumulatorResult;
 
 public class Robot extends TimedRobot {
   private MotorLayout robo= new MotorLayout(6);
@@ -27,7 +32,7 @@ public class Robot extends TimedRobot {
 //input areas
   private final Timer m_timer = new Timer();
   private final int ultraPort = 0;
-  private final double conversion = 0.5;//voltage to cm
+  private final double conversion = 110.7027140386606;//voltage to cm
   public double currentDistance = 0;
   private double x;
 	private double y;
@@ -37,8 +42,13 @@ public class Robot extends TimedRobot {
   private double sucko = 0;
   private boolean suckoDown = true;
 //Varius ints and timers
-private AnalogInput ultrasonic = new AnalogInput(ultraPort);
+private Encoder slideEncode = new Encoder(0,1);
+private AnalogInput distanceSensor = new AnalogInput(ultraPort);
 //sensors
+
+
+
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -62,7 +72,7 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
    */
   @Override
   public void autonomousPeriodic() {
-    double currentDistance = ultrasonic.getValue() * conversion;
+    //double currentDistance = ultrasonic.getValue() * conversion;
     // Drive for 2 seconds
     if (m_timer.get() < 2.0) {
        // drive forwards half speed
@@ -111,20 +121,27 @@ private AnalogInput ultrasonic = new AnalogInput(ultraPort);
 
       if (rightTrig.get()) {
         suckoDown = false;
+        System.out.println("Suck on");
       }
       else if(rightThub.get()){
         suckoDown = true;
+        System.out.println("Suck off");
       }
 
       if(suckoDown && sucko > 0.0){
         sucko-= 0.01;
-        System.out.println("Suck off");
       }
       else if(!suckoDown && sucko < 1.00){ 
         sucko+=0.01;
-        System.out.println("Suck on");
       }
       robo.getController(4).set(sucko);
+
+
+
+      //distance sensor reading
+
+      System.out.println(distanceSensor.getVoltage() * conversion);
+      
   }
   /**
    * This function is called periodically during test mode.
