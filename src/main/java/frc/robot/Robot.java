@@ -41,6 +41,8 @@ public class Robot extends TimedRobot {
   private double stickSense;
   private double sucko = 0;
   private boolean suckoDown = true;
+  final int downValue = 0;
+  final int upvalue = 1;
 //Varius ints and timers
 private Encoder slideEncode = new Encoder(0,1);
 private AnalogInput distanceSensor = new AnalogInput(ultraPort);
@@ -56,6 +58,7 @@ private AnalogInput distanceSensor = new AnalogInput(ultraPort);
   @Override
   public void robotInit() {
     CameraServer.getInstance().startAutomaticCapture();
+    slideEncode.reset();
   }
 
   /**
@@ -116,9 +119,13 @@ private AnalogInput distanceSensor = new AnalogInput(ultraPort);
       robo.getController(3).set((-stickY+stickX) / stickSense);
 
 
-      // climbo MODE
-      robo.getController(5).set(rstick.getY());
-
+      // slido MODE
+      if(slideEncode.get() < upvalue && slideEncode.get() > downValue)
+        robo.getController(5).set(rstick.getY());
+      else if(slideEncode.get() >= upvalue && rstick.getY() < 0)
+        robo.getController(5).set(rstick.getY());
+      else if(slideEncode.get() <= downValue && rstick.getY() > 0)
+        robo.getController(5).set(rstick.getY());
       if (rightTrig.get()) {
         suckoDown = false;
         System.out.println("Suck on");
@@ -139,8 +146,8 @@ private AnalogInput distanceSensor = new AnalogInput(ultraPort);
 
 
       //distance sensor reading
-
-      System.out.println(distanceSensor.getVoltage() * conversion);
+      System.out.println();
+      //System.out.println(distanceSensor.getVoltage() * conversion);
       
   }
   /**
